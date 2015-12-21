@@ -1,11 +1,18 @@
 __author__ = 'Charles Engen'
 
+# SQLite is a bd manager, it is something you will want to learn
 import sqlite3
+# Tempfile is a built-in method which finds the tempfile no matter the system
 import tempfile
+# Makedirs creates directories, getvwd gets the current working directory
 from os import makedirs, getcwd
+# Join takes any amount of inputs and gives back a single string to use for drive location
 from os.path import join
 
-
+# This try statement looks to see if there is a mainpath.txt
+# if it cannot find said file it will create the db in the temp directory
+# else it creates it where the main_path file says to. Change it as
+# necessary.
 try:
     with open(join(getcwd(), "main_path.txt"), 'r') as file:
         file.seek(0)
@@ -14,6 +21,9 @@ try:
 except FileNotFoundError:
     _path_ = join(tempfile.gettempdir(), "Family_Database")
 
+# This try statement creates the main path for the db to use,
+# depending on the previous statement. It creates a directory to store the
+# database in.
 try:
     makedirs(_path_)
 except FileExistsError:
@@ -23,6 +33,9 @@ except FileExistsError:
     except FileExistsError:
         _path_ = join(_path_, "Family_Database")
 
+# This try statement checks the SQLite version, you might have to add more
+# code here if you use version specific code. You will then have
+# to tell the user that they failed to meet your requirements.
 try:
     with sqlite3.connect(join(_path_, 'family_tree.db')) as conn:
         cursor = conn.cursor()
@@ -103,6 +116,9 @@ def _remove_member(memberID=None, memberName=None):
     return "%s was deleted"
 
 
+# The following code uses the fact that python calls a module
+# __main__ if it is being used as the main file, when that is the case
+# it runs the code.
 if __name__ == "__main__":
     _give_db_command("CREATE TABLE IF NOT EXISTS FAMILIES "
                      "(ID integer primary key, name text)")
