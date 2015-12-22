@@ -78,7 +78,6 @@ def create_family_member(name):
     _give_db_command("CREATE TABLE IF NOT EXISTS FAMILIES "
                      "(ID integer primary key, name text)")
     with sqlite3.connect(join(_path_, 'family_tree.db')) as CONN:
-        print(name)
         c = CONN.cursor()
         c.execute("SELECT rowid FROM FAMILIES WHERE name = ?", (name,))
         data_ = c.fetchall()
